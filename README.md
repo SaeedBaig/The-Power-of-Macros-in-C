@@ -16,17 +16,17 @@ They are typically used for defining constants. E.g.
 
 They allow us to use more human-readable symbols in place of raw numbers or expressions.
 
-### ***"So what's so cool about macros?***
+### ***"So what's so cool about macros?"***
 
 ## Save memory and time
 
-You may already be wondering "why would I use a #define when I can just use an actual const?", like this:
+You may already be wondering _"why would I use a #define when I can just use an actual const?"_, like this:
 ```C
 const int c = 299792458; 
 const int MAX_LINE_LENGTH = 1000;
 ```
 
-The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprcessor. So if you use ```#define c 299792458```, though your code may look like this:
+The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprcessor. So if you use ```C #define c 299792458```, though your code may look like this:
 ```C
 printf("The speed of light is %dm/s.", c);
 ```

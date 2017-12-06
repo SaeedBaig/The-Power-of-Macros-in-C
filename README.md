@@ -16,7 +16,7 @@ They are typically used for defining constants. E.g.
 
 They allow us to use more human-readable symbols in place of raw numbers or expressions.
 
-###***"So what's so cool about macros?***
+### ***"So what's so cool about macros?***
 
 ## Save memory and time
 

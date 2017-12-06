@@ -86,7 +86,8 @@ Since macros don't have to expand to a syntactically-correct statement on their 
 #include <stdio.h>
 
 // "typeof" is a GCC extension btw; acts like the "type" function in Python
-#define foreach(item, array, length) for (typeof(*array) *p = array, item = *p; p != array+length; p = p+1, item = *p)
+#define foreach(item, array, length) \
+        for (typeof(*array) *p = array, item = *p; p != array+length; p = p+1, item = *p)
 
 int main()
 {
@@ -150,7 +151,8 @@ Here, ```typename(x)``` expands to the type of ```x``` as a string (I'm using th
 
 So what does this have to do with summing an array? Well, in the same way that ```typename(x)``` expands to different strings based on the type of ```x```, a ```sum(array, length)``` macro can expand to invoke different functions based on the type of ```array```, like so: 
 ```C
-#define sum(array, length) _Generic(*array, int: sumIntArray, float: sumFloatArray, default: sumDoubleArray)(array, length)
+#define sum(array, length) \
+        _Generic(*array, int: sumIntArray, float: sumFloatArray, default: sumDoubleArray)(array, length)
 ```
 
 Where ```sumIntArray```, ```sumFloatArray``` and ```sumDoubleArray``` are normal functions to sum arrays of those types (examples of their implementations:)

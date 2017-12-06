@@ -199,5 +199,6 @@ You can also include _Generics inside _Generics. For example, here's a generic p
 #define power(x, y) \
         _Generic((x), int: _Generic((y), int: (int) pow(x,y), default: pow(x,y)), default: pow(x,y))
 ```
+which can be useful if precision is a concern and you'd rather use ints when the answer is supposed to be an int and double when it's actually a double.
 
 We now have an ANSI-C compliant way to create generic "functions" in C! The downside of this approach is that you STILL have to write seperate functions for each data type. But at least now that can all be abstracted away behind a single macro (you can put those all away in a seperate sum.h file and then ```#include``` it when needed).

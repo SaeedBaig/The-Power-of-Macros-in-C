@@ -114,18 +114,18 @@ However, we can write a generic absolute-value "function" like this:
 #define absolute_value(x) ((x) >= 0 ? (x) : -(x))
 ```
 
-absolute_value will now wok on any data type (int, float, double, you name it!) for which the ">=" and "-" operators are defined.
+```absolute_value``` will now wok on any data type (int, float, double, you name it!) for which the ```>=``` and ```-``` operators are defined.
 
 **NOTE:** If you were wondering what's with all the seemingly-unecessary paranthases in the absolute_value macro, it's because macro paramaters AREN'T evaluated before being added in the macro body, which can yield unexpected results. For example, take this simple cube macro:
 ```C
 #define cube(x) x * x * x
 int x = cube(3);
 ```
-What do you think the value of "x" is? It's 27 (as you'd expect), since ```cube(3)``` expands to ```3 * 3 * 3```. However, what about this case?
+What do you think the value of ```x``` is? It's 27 (as you'd expect), since ```cube(3)``` expands to ```3 * 3 * 3```. However, what about this case?
 ```C
 int x = cube(2 + 1)
 ```
-Still 27? Nope! Since ```cube(2+1)``` expands to ```2 + 1 * 2 + 1 * 2 + 1```, x is actually 7 (oops). This is why enclosing your macro body (and any paramaters in the body) in paranthases is generally a good idea; to avoid these kind of operator-precedence problems (some other common pitfalls to watch out for when using macros can be found [here](https://gcc.gnu.org/onlinedocs/cpp/Macro-Pitfalls.html){:target="_blank"}).
+Still 27? Nope! Since ```cube(2+1)``` expands to ```2 + 1 * 2 + 1 * 2 + 1```, ```x``` is actually 7 (oops). This is why enclosing your macro body (and any paramaters in the body) in paranthases is generally a good idea; to avoid these kind of operator-precedence problems (some other common pitfalls to watch out for when using macros can be found [here](https://gcc.gnu.org/onlinedocs/cpp/Macro-Pitfalls.html)).
 
 But it is possible to create more complex macros. Say, for instance, we wanted to create a sum macro that could return the sum of an array of any type (i.e. one that works on arrays of ints, doubles, floats, whatever). And what's more, we want the return type to be the SAME as the type of the array. So if it's summing an array of ints, it actually returns an int. If it's summing an array of doubles, it returns a double, etc. Something that behaves like this:
 
@@ -138,22 +138,22 @@ int another_array[] = {3, 5, 1, 4};
 printf("sum(another_array) = %d\n", sum(another_arry, 4)); // prints 13
 ```
 
-Is that even possible in C? Yes it is, thanks to _Generics.
+Is that even possible in C? Yes it is, thanks to ```_Generic```s.
 
-_Generic was a new feature introduced in C11 (the current standard of the C language) that allows you to make differnt selections based on the type of the argument. A more detailed explanation of _Generics can be found [here](http://www.robertgamble.net/2012/01/c11-generic-selections.html) (which I encourage you to read... it's quite an interesting feature), but the gist of it is that they sort of act like a switch statement for types. To give 1 simple example of how _Generic works:
+```_Generic``` is a feature introduced in C11 (the current standard of the C language) that allows you to make differnt selections based on the type of the argument. A more detailed explanation of _Generics can be found [here](http://www.robertgamble.net/2012/01/c11-generic-selections.html) (which I encourage you to read... it's quite an interesting feature), but the gist of it is that they sort of act like a switch statement for types. To give 1 simple example of how ```_Generic``` works:
 
 ```C
 #define typename(x) _Generic((x), int: "int", double: "double", char: "char", char *: "string", default: "int")
 ```
 
-Here, typename() expands to the type of it's paramater as a string (I'm using the phrase "expands to" rather than "returns" here, since _Generic() behaves more like a macro rather than a function). So typename(42) returns "int", typename(4.2) returns "double", typename("Hello World") returns "string" and anything else whose type isn't covered expands to the value given by ```default``` (in this case, "int").
+Here, ```typename(x)``` expands to the type of ```x``` as a string (I'm using the phrase "expands to" rather than "returns" here since ```_Generic``` behaves more like a macro rather than a function). So ```typename(42)``` expands to ```"int"```, ```typename(4.2)``` expands to ```"double"```, ```typename("Hello World")``` expands to ```"string"```, and anything else whose type isn't covered expands to the value given by ```default``` (in this case, ```"int"```).
 
-So what does this have to do with my summing an array? Well, in the same way that typename() expands to different strings based on the type of it's argument, a sum() macro can expand to invoke different functions based on the type of the array, like so: 
+So what does this have to do with summing an array? Well, in the same way that ```typename(x)``` expands to different strings based on the type of ```x```, a ```sum(array, length)``` macro can expand to invoke different functions based on the type of ```array```, like so: 
 ```C
 #define sum(array, size) _Generic(*array, int: sumIntArray, float: sumFloatArray, default: sumDoubleArray)(array, size)
 ```
 
-Where "sumIntArray", "sumFloatArray" and "sumDoubleArray" are normal functions to sum arrays of those types (examples of their implementations:)
+Where ```sumIntArray```, ```sumFloatArray``` and ```sumDoubleArray``` are normal functions to sum arrays of those types (examples of their implementations:)
 ```C
 #include <stdlib.h>
 
@@ -184,4 +184,4 @@ double sumDoubleArray(const double array[], const size_t size)
 
 So now our sum macro will invoke the appropriate function (based on the type of the array its given) and return the appropriate type.
 
-So now we have an ANSI-C compliant way to create "generic" functions in C! The downside of this approach is that you STILL have to write seperate functions for each data type. But at least now that can all be extracted away behinf 1 single generic "sum" macro (you can probably put those away in a seperate sum.h file and then call as needed from your own code).
+We now have an ANSI-C compliant way to create generic "functions" in C! The downside of this approach is that you STILL have to write seperate functions for each data type. But at least now that can all be abstracted away behind a single macro (you can put those all away in a seperate sum.h file and then #include it as needed from other code).

@@ -104,7 +104,7 @@ Although I don't usually use these constructs myself (it can be confusing for ot
 But let me get back to the point about function-like macros, because that's where the REAL power of macros comes from.
 
 ## Simulate type-generic functions
-As you may have noticed, macros don't require you to specify the type of their paramaters. Since C doesn't have templates or method overloading, macros are the closest thing you can get to having generic functions in C that work on any data type.
+As you may have noticed, macros don't require you to specify the type of their paramaters. Since C doesn't have templates or method overloading, macros are the closest thing you can get to having generic functions that work on any data type.
 
 For example, if you've ever needed to use an absolute-value function in your C code, you may have been dissapointed to find that there's actually 2 absolute value functions; "abs" for int, and "fabs" for doubles. It just seemed so... unsatisfying to have to use different functions for the same thing!
 

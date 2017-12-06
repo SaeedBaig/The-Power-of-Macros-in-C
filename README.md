@@ -26,9 +26,7 @@ const int c = 299792458;
 const int MAX_LINE_LENGTH = 1000;
 ```
 
-The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprcessor. So if you use ```C
-#define c 299792458
-```, though your code may look like this:
+The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprcessor. So if you use ```#define c 299792458```, though your code may look like this:
 ```C
 printf("The speed of light is %dm/s.", c);
 ```

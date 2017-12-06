@@ -184,4 +184,9 @@ double sumDoubleArray(const double array[], const size_t length)
 
 So now our sum macro will invoke the appropriate function (based on the type of the array its given) and return the appropriate type.
 
-We now have an ANSI-C compliant way to create generic "functions" in C! The downside of this approach is that you STILL have to write seperate functions for each data type. But at least now that can all be abstracted away behind a single macro (you can put those all away in a seperate sum.h file and then #include it as needed from other code).
+Once you've got the hang of creating macros with ```_Generic```, it becomes trivial to create generic macros for other purposes as well. (e.g. to return the maximum value in an array).
+```C
+#define max(array, length) _Generic(*array, int: maxIntArray, float: maxFloatArray, default: maxDoubleArray)(array, length)
+```
+
+We now have an ANSI-C compliant way to create generic "functions" in C! The downside of this approach is that you STILL have to write seperate functions for each data type. But at least now that can all be abstracted away behind a single macro (you can put those all away in a seperate sum.h file and then ```#include``` it when needed).

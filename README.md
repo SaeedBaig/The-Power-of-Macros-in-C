@@ -86,13 +86,13 @@ Since macros don't have to expand to a syntactically-correct statement on their 
 #include <stdio.h>
 
 // "typeof" is a GCC extension btw; acts like the "type" function in Python
-#define foreach(item, array, length) \
-        for (typeof(*(array)) *p = array, item = *p; p != array+(length); p = p+1, item = *p)
+#define each(item, array, length) \
+        (typeof(*(array)) *p = (array), (item) = *p; p != (array)+(length); p = p+1, (item) = *p)
 
 int main()
 {
         int numbers[] = {4, 2, 99, -3, 54};
-	foreach (number, numbers, 5) {
+	for each (number, numbers, 5) {
 	        printf("number = %d\n", number);
 	}
 

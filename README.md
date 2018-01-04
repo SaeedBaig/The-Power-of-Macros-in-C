@@ -28,12 +28,12 @@ const int MAX_LINE_LENGTH = 1000;
 
 The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprcessor. So if you use ```#define c 299792458```, though your code may look like this:
 ```C
-printf("The speed of light is %dm/s.", c);
+printf("The speed of light is %dm/s.\n", c);
 ```
 
 All the compiler sees is:
 ```C
-printf("The speed of light is %dm/s.", 299792458);
+printf("The speed of light is %dm/s.\n", 299792458);
 ```
 which ultimately makes your code more memory-efficient (since no variable has to be created) and time-efficient (since there's no variable value to access; the compiler already sees the value).
 
@@ -48,11 +48,11 @@ Lets admit it... ```and``` is more readable than ```&&```; ```or``` is more read
 So you can now write C code that looks like this:
 ```C
 if (random_mark > 50 and random_mark <= 100) {
-        puts("You passed!");
-} else if (random_mark < 0 or random_mark > 100){
-        puts("Error: Invalid mark");
+        printf("You passed!\n");
+} else if (random_mark < 0 or random_mark > 100) {
+        printf("Error: Invalid mark\n");
 } else {
-	puts("You failed.");
+	printf("You failed.\n");
 }
 ```
 
@@ -72,7 +72,7 @@ until (i == 10) {
 }
 
 unless (i == 0)
-        puts("Works similarily to the 'unless' statements in Ruby!");
+        printf("Works similarily to the 'unless' statements in Ruby!\n");
 ```
 
 Macros that take paramaters are called "function-like macros" (emphasis on "like", since there are some caveats of using them compared to normal functions). Their syntax is roughly as follows:

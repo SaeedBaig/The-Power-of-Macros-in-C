@@ -48,11 +48,11 @@ Lets admit it... ```and``` is more readable than ```&&```; ```or``` is more read
 So you can now write C code that looks like this:
 ```C
 if (random_mark > 50 and random_mark <= 100)
-        printf("You passed!\n");
+    printf("You passed!\n");
 else if (random_mark < 0 or random_mark > 100)
-        printf("Error: Invalid mark\n");
+    printf("Error: Invalid mark\n");
 else
-	printf("You failed.\n");
+    printf("You failed.\n");
 ```
 
 and it's totally valid; will compile without warning or error. Also note that the "and" in "random_num" isn't replaced. Like normal find-and-replace, macros only replace the text if it's not surrounded on either side by an alphanumeric charachter.
@@ -66,12 +66,12 @@ Yup, macros can take paramaters! So now you can write code like this:
 ```C
 int i = 0;
 until (i == 10) {
-        printf("i = %d\n", i);
-	i++;
+    printf("i = %d\n", i);
+    i++;
 }
 
 unless (i == 0)
-        printf("Works similarily to the 'unless' statements in Ruby!\n");
+    printf("Works similarily to the 'unless' statements in Ruby!\n");
 ```
 
 Macros that take paramaters are called "function-like macros" (emphasis on "like", since there are some caveats of using them compared to normal functions). Their syntax is roughly as follows:
@@ -86,16 +86,15 @@ Since macros don't have to expand to a syntactically-correct statement on their 
 
 // "typeof" is a GCC extension btw; acts like the "type" function in Python
 #define each(item, array, length) \
-        (typeof(*(array)) *p = (array), (item) = *p; p != (array)+(length); p = p+1, (item) = *p)
+    (typeof(*(array)) *p = (array), (item) = *p; p != (array)+(length); p = p+1, (item) = *p)
 
 int main()
 {
-        int numbers[] = {4, 2, 99, -3, 54};
-	for each (number, numbers, 5) {
-	        printf("number = %d\n", number);
-	}
+    int numbers[] = {4, 2, 99, -3, 54};
+    for each (number, numbers, 5)
+	printf("number = %d\n", number);
 
-	return 0;
+    return 0;
 }
 ```
 
@@ -151,7 +150,7 @@ Here, ```typename(x)``` expands to the type of ```x``` as a string (I'm using th
 So what does this have to do with summing an array? Well, in the same way that ```typename(x)``` expands to different strings based on the type of ```x```, a ```sum(array, length)``` macro can expand to invoke different functions based on the type of ```array```, like so: 
 ```C
 #define sum(array, length) \
-        _Generic(*(array), int: sumIntArray, float: sumFloatArray, default: sumDoubleArray)((array), (length))
+    _Generic(*(array), int: sumIntArray, float: sumFloatArray, default: sumDoubleArray)((array), (length))
 ```
 
 Where ```sumIntArray```, ```sumFloatArray``` and ```sumDoubleArray``` are normal functions to sum arrays of those types (examples of their implementations:)
@@ -160,26 +159,26 @@ Where ```sumIntArray```, ```sumFloatArray``` and ```sumDoubleArray``` are normal
 
 int sumIntArray(const int array[], const size_t length)
 {
-        int total = 0;
-        for (size_t i = 0; i < length; i++)
-                total += array[i];
-	return total;
+    int total = 0;
+    for (size_t i = 0; i < length; i++)
+            total += array[i];
+    return total;
 }
 
 float sumFloatArray(const float array[], const size_t length)
 {
-        float total = 0;
-	for (size_t i = 0; i < length; i++)
-                total += array[i];
-	return total;
+    float total = 0;
+    for (size_t i = 0; i < length; i++)
+            total += array[i];
+    return total;
 }
 
 double sumDoubleArray(const double array[], const size_t length)
 {
-        double total = 0;
-	for (size_t i = 0; i < length; i++)
-	        total += array[i];
-	return total;
+    double total = 0;
+    for (size_t i = 0; i < length; i++)
+	    total += array[i];
+    return total;
 }
 ```
 
@@ -188,7 +187,7 @@ So now our sum macro will invoke the appropriate function (based on the type of 
 Once you've got the hang of creating macros with ```_Generic```, it becomes trivial to create generic macros for other common operations as well (e.g. to return the maximum value in an array).
 ```C
 #define max(array, length) \
-        _Generic(*(array), int: maxIntArray, float: maxFloatArray, default: maxDoubleArray)((array), (length))
+    _Generic(*(array), int: maxIntArray, float: maxFloatArray, default: maxDoubleArray)((array), (length))
 ```
 
 You can also include _Generics inside _Generics. For example, here's a generic power macro that returns an int when both of its arguments are ints and a double otherwise:
@@ -196,7 +195,7 @@ You can also include _Generics inside _Generics. For example, here's a generic p
 #include <math.h>
 
 #define power(x, y) \
-        _Generic((x), int: _Generic((y), int: (int) pow(x,y), default: pow(x,y)), default: pow(x,y))
+    _Generic((x), int: _Generic((y), int: (int) pow(x,y), default: pow(x,y)), default: pow(x,y))
 ```
 which can be useful if precision is a concern and you'd rather use ints when the answer is supposed to be an int and double when it's actually a double.
 

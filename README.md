@@ -47,13 +47,12 @@ Lets admit it... ```and``` is more readable than ```&&```; ```or``` is more read
 ```
 So you can now write C code that looks like this:
 ```C
-if (random_mark > 50 and random_mark <= 100) {
+if (random_mark > 50 and random_mark <= 100)
         printf("You passed!\n");
-} else if (random_mark < 0 or random_mark > 100) {
+else if (random_mark < 0 or random_mark > 100)
         printf("Error: Invalid mark\n");
-} else {
+else
 	printf("You failed.\n");
-}
 ```
 
 and it's totally valid; will compile without warning or error. Also note that the "and" in "random_num" isn't replaced. Like normal find-and-replace, macros only replace the text if it's not surrounded on either side by an alphanumeric charachter.

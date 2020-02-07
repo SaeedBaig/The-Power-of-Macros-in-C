@@ -26,7 +26,7 @@ const int c = 299792458;
 const int MAX_LINE_LENGTH = 1000;
 ```
 
-The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprcessor. So if you use ```#define c 299792458```, though your code may look like this:
+The reason/s is because #defines aren't variables; they're just text to be replaced. What's more, this find-and-replace happens BEFORE compile-time by the preprocessor. So if you use ```#define c 299792458```, though your code may look like this:
 ```C
 printf("The speed of light is %dm/s.\n", c);
 ```
@@ -37,7 +37,7 @@ printf("The speed of light is %dm/s.\n", 299792458);
 ```
 which ultimately makes your code more memory-efficient (since no variable has to be created) and time-efficient (since there's no variable value to access; the compiler already sees the value).
 
-Though that's a negligible benefit of macros. One of their more cooler capabilities is to:
+That's a negligible benefit though. One of their cooler capabilities is to:
 
 ## Create new "keywords" and constructs
 Lets admit it... ```and``` is more readable than ```&&```; ```or``` is more readable than ```||```. If you come from any language with ```and``` and ```or```, you may miss having actual-English keywords. But now you can have them back with macros! It's as simple as:
@@ -124,7 +124,7 @@ What do you think the value of ```x``` is? It's 27 (as you'd expect), since ```c
 ```C
 int x = cube(2 + 1)
 ```
-Still 27? Nope! Since ```cube(2+1)``` expands to ```2 + 1 * 2 + 1 * 2 + 1```, ```x``` is actually 7 (oops). That's why it's generally a good idea to enclose your macro body (and any paramaters in the body) in paranthases to avoid these kind of operator-precedence problems (some other common pitfalls to watch out for when using macros can be found [here](https://gcc.gnu.org/onlinedocs/cpp/Macro-Pitfalls.html)).
+Still 27? Nope! Since ```cube(2+1)``` expands to ```2 + 1 * 2 + 1 * 2 + 1```, which is actually 7 (oops). That's why it's generally a good idea to enclose your macro body (and any paramaters in the body) in paranthases to avoid these kind of operator-precedence problems (some other common pitfalls to watch out for when using macros can be found [here](https://gcc.gnu.org/onlinedocs/cpp/Macro-Pitfalls.html)).
 
 But it is possible to create more complex macros. Say, for instance, we wanted to create a ```sum(array, length)``` macro that could return the sum of an array of any type (i.e. one that works on arrays of ints, doubles, floats, whatever). And what's more, we want the return type to be the SAME as the type of the array. So if it's summing an array of ints, it actually returns an int. If it's summing an array of doubles, it returns a double, etc. Something that behaves like this:
 

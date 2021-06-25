@@ -139,13 +139,13 @@ printf("sum(another_array) = %d\n", sum(another_arry, 4)); // prints 13
 
 Is that even possible in C? Yes it is, thanks to _Generics.
 
-```_Generic``` is a feature introduced in C11 (the current standard of the C language) that allows you to make differnt selections based on the type of the argument. A more detailed explanation of _Generics can be found [here](http://www.robertgamble.net/2012/01/c11-generic-selections.html) (which I encourage you to read... it's quite an interesting feature), but the gist of it is that they sort of act like a switch statement for types. To give 1 simple example of how ```_Generic``` works:
+```_Generic``` is a feature introduced in C11 (the current standard of the C language) that allows you to make different selections based on the type of the argument. A more detailed explanation of _Generics can be found [here](http://www.robertgamble.net/2012/01/c11-generic-selections.html) (which I encourage you to read... it's quite an interesting feature), but the gist of it is that they sort of act like a switch statement for types. To give 1 simple example of how ```_Generic``` works:
 
 ```C
-#define typename(x) _Generic((x), int: "int", double: "double", char: "char", char *: "string", default: "int")
+#define typename(x) _Generic((x), int: "int", double: "double", char: "char", char *: "string", default: "unknown")
 ```
 
-Here, ```typename(x)``` expands to the type of ```x``` as a string (I'm using the phrase "expands to" rather than "returns" here since ```_Generic``` is more like a macro than a function). So ```typename(42)``` expands to ```"int"```, ```typename(4.2)``` expands to ```"double"```, ```typename("Hello World")``` expands to ```"string"```, and anything else whose type isn't covered expands to the value given by ```default``` (in this case, ```"int"```).
+Here, ```typename(x)``` expands to the type of ```x``` as a string (I'm using the phrase "expands to" rather than "returns" here since ```_Generic``` is more like a macro than a function). So ```typename(42)``` expands to ```"int"```, ```typename(4.2)``` expands to ```"double"```, ```typename("Hello World")``` expands to ```"string"```, and anything else whose type isn't covered expands to the value given by ```default``` (in this case, ```"unknown"```).
 
 So what does this have to do with summing an array? Well, in the same way that ```typename(x)``` expands to different strings based on the type of ```x```, a ```sum(array, length)``` macro can expand to invoke different functions based on the type of ```array```, like so: 
 ```C
